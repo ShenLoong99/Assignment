@@ -3,16 +3,15 @@ const { Double } = require('bson');
 
 const db = "mongodb+srv://ShenLoong99:123@webapiassignment-x0qmy.mongodb.net/MangaAPI?retryWrites=true&w=majority";
 
+//Connect to MongoDB database
 mongoose
-.connect(db)
-.then(() => {
-    console.log("Connected to database");
-}
-)
-.catch(() => {
-    console.log("Error connecting database");
-}
-)
+	.connect(process.env.MONGODB_URI || db, { useNewUrlParser: true })
+	.then(() => {
+		console.log("Connected to database");
+	})
+	.catch(() => {
+		console.log("Error Connected to database");
+	});
 
 // A schema matched the table in your database
 const mangaSchema = new mongoose.Schema({

@@ -8,12 +8,7 @@ const path = require('path'); // include for heroku
 // const title = 'Boku no Pico';
 var mangaName, mangaJapName, mangaCreatedAt, mangaRating, mangaSynopsis, mangaID, limit;
 var animeStartDate, animeEpisodes, animeScore, animeAiring, animeGenres;
-const PORT = process.env.PORT || 8080; // step 1: heroku
 
-// step 2: heroku
-mongoose.connect( process.env.MONGODB_URI || 'mongodb://localhost/mangaAPI', {
-    useNewURLParser: true
-}) 
 
 app.get('/add',(req,res)=>{
     title = req.query.title;
@@ -258,8 +253,9 @@ app.get('/show',(req,res)=>{
     });
 });
 
-// step 3: heroku
+// Heroku
 if (process.env.NODE_ENV === 'production') { 
+    // Exprees will serve up production assets
     app.use(express.static( 'client/build' ));
 
     app.get('*', () => (req, res) => {
@@ -267,8 +263,10 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
-app.listen(5000, () => {
-    console.log('server listening on port 5000');
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
   });
 
 //   app.listen(process.env.PORT || 8080, function(){
