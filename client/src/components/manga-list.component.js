@@ -23,8 +23,13 @@ export default class MangaList extends Component {
 
   componentDidMount() {
     axios.get('/getAllData')
-      .then(response => {
-        this.setState({ mangas: response.data })
+      .then(result => {
+        console.log(result.data);
+        if (result.data == "") {
+          this.setState ({ mangas: "none" });
+          return;
+        }
+        this.setState({ mangas: result.data })
       })
       .catch((error) => {
         console.log(error);
@@ -52,7 +57,7 @@ export default class MangaList extends Component {
             </tr>
           </thead>
           <tbody>
-            { this.mangaList() }
+            { this.state.mangas === "none" ? (<tr><td colspan="5" className="text-center">No mangas saved at the moment!</td></tr>) : ( this.mangaList()) }
           </tbody>
         </table>
       </div>

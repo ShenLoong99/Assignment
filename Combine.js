@@ -1,14 +1,19 @@
-const Record = require('./Connect');
+const Record = require('./Connect').Record;
+const User = require('./Connect').User;
 const express = require('express');
 const app = express();
 const axios = require('axios');
-const mongoose = require('mongoose');
+// const bcrypt = require("bcryptjs");
 const path = require('path'); // include for heroku
 
 // const title = 'Boku no Pico';
 var mangaName, mangaJapName, mangaCreatedAt, mangaRating, mangaSynopsis, mangaID, limit;
 var animeStartDate, animeEpisodes, animeScore, animeAiring, animeGenres;
+var username, email, password;
 
+// cookie parser
+var cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
 app.get('/add',(req,res)=>{
     title = req.query.title;
@@ -46,6 +51,7 @@ app.get('/add',(req,res)=>{
                 // Save to database
                 mangaDetails = new Record ({
                     mangaName: mangaName,
+                    userId: req.cookies["uid"],
                     mangaJapName: mangaJapName,
                     mangaCreatedAt: mangaCreatedAt, 
                     mangaRating: mangaRating,
@@ -169,8 +175,9 @@ app.get('/update', (req,res) => {
 });
 
 // get all saved data
+// http://localhost:5000/getAllData
 app.get('/getAllData', (req, res) => {
-    Record.find({ })  
+    Record.find({ userId: req.cookies["uid"] })  
       .then(response => {
         res.status(200).json(response);
       })
@@ -192,7 +199,7 @@ app.get('/find', (req, res) => {
       });
     }
     else if (title != "undefined" || title != "" || title != null) {
-        Record.find({ mangaName: title })  
+        Record.find({ mangaName: title, userId: req.cookies["uid"] })  
       .then(response => {
         res.status(200).json(response);
       })
@@ -252,6 +259,126 @@ app.get('/show',(req,res)=>{
         });
     });
 });
+
+// User account mongoose action
+// http://localhost:5000/createUser?user=xiaoMing&email=123@gmail.com&pass=asd
+app.get('/createUser', (req, res) => {
+    username = req.query.user;
+    email = req.query.email;
+    password = req.query.pass;
+
+    // hash password
+    var passwordHash = require('password-hash');
+    var hashedPassword = passwordHash.generate(password);
+
+    userDetails = new User ({
+        username: username,
+        email: email,
+        password: hashedPassword
+    });
+    // save to database
+    userDetails
+    .save()
+    .then(result => {
+        console.log("Success" + result);
+        res.send("<h1>New user created!<h1>");
+    })
+    .catch(error => {
+        res.status(400).json(error);
+    });
+});
+
+// get that particular user data
+// http://localhost:5000/getUserData
+app.get('/getUserData', (req, res) => {
+    User.find({ _id: req.cookies["uid"] })  
+      .then(response => {
+        res.status(200).json(response);
+      })
+      .catch(error => {
+        res.status(400).json(error);
+      });
+});
+
+// get all user data
+// http://localhost:5000/getUserData
+app.get('/checkSameData', (req, res) => {
+    username = req.query.user;
+    User.find({ username: username })  
+      .then(response => {
+        if (response) {
+            return res.send(true);
+        }
+        else {
+            return res.send(false);
+        }
+      })
+      .catch(error => {
+        res.status(400).json(error);
+      });
+});
+
+// http://localhost:5000/login?user=ShenLoong99&pass=P@$$vv0rD
+app.get('/login', (req, res) => {
+    username = req.query.user;
+    password = req.query.pass;
+    var passwordHash = require('password-hash');
+
+    User.findOne({ username: username })
+    .then ((response) => {
+        console.log(response);
+        // check if password correct
+        if (!passwordHash.verify(password, response.password)) { 
+            return res.send(false);
+        }
+        else { // save username, email and user id to cookie
+            res.cookie("uname", response.username);
+            res.cookie("uid", response._id);
+            res.cookie("uemail", response.email);
+            res.send(true);
+        }
+    })
+    .catch((error) => {
+        res.status(400).json(error);
+    });	
+});
+
+// logout code
+// http://localhost:5000/logout
+app.get('/logout', (req, res) => {
+    // clear auth-token cookie and user id cookie
+	res
+    .clearCookie("uname")
+    .clearCookie("uid")
+    .clearCookie("uemail")
+    .send(true);
+});
+
+// check whether cookie exist
+// http://localhost:5000/checkCookie
+app.get('/checkCookie', (req, res) => {
+    if (req.cookies["uid"] == null || req.cookies["uid"] == "" || req.cookies["uid"] == "undefined") {
+        return res.send(false);
+    }
+    else {
+        return res.send(true);
+    }
+});
+
+// update user data
+app.get('/updateUser', (req, res) => {
+    var username = req.query.user;
+    var email = req.query.email;
+    Record.updateOne({ _id: req.cookies["uid"] }, { username: username }, function(err, res) {
+        // Updated at most one doc, `res.modifiedCount` contains the number
+        // of docs that MongoDB updated
+    });
+    Record.updateOne({ _id: req.cookies["uid"] }, { email: email }, function(err, res) {
+        // Updated at most one doc, `res.modifiedCount` contains the number
+        // of docs that MongoDB updated
+    });
+    res.send("<h1>Updating user data<h1>");
+}); 
 
 // Heroku
 if (process.env.NODE_ENV === 'production') { 

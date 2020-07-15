@@ -77,7 +77,7 @@ export default class ViewManga extends Component {
               </tbody>
             </table>
             <Link to={"/edit/" + manga._id} className="btn btn-primary mr-5">Update</Link> 
-            <Link to={"/"} className="btn btn-primary">Back to List</Link>
+            <Link to={"/mangaList"} className="btn btn-primary">Back to List</Link>
           </div>
         </div>
         ))}

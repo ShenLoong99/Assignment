@@ -51,7 +51,7 @@ export default class InsertManga extends Component {
     }
     this.state.reload = true;
     setTimeout(function () {
-      window.location = '/';
+      window.location = '/mangaList';
   }, 5000);
   }
 

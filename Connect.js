@@ -16,6 +16,7 @@ mongoose
 // A schema matched the table in your database
 const mangaSchema = new mongoose.Schema({
     mangaName: {type: String},
+    userId: {type: String},
     mangaJapName: {type: String},
     mangaCreatedAt: {type: Date}, 
     mangaRating: {type: Number},
@@ -26,9 +27,16 @@ const mangaSchema = new mongoose.Schema({
     animeAiring: {type: Boolean},
     animeGenres: {type: String}, 
     posterImg: {type: String}
-}
-);
+});
+
+const userSchema = new mongoose.Schema({
+    username: {type: String},
+    email: {type: String},
+    password: {type: String}
+});
 
 const Record = mongoose.model('manga', mangaSchema);
+const User = mongoose.model('user', userSchema);
 
-module.exports = Record;
+module.exports.Record = Record;
+module.exports.User = User;

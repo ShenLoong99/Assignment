@@ -128,7 +128,6 @@ export default class EditManga extends Component {
       .then(res => console.log(res.data));
     }
     window.location = '/view/' + id;
-    
   }
 
   render() {

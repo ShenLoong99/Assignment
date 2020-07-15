@@ -27,9 +27,17 @@ export default class SearchManga extends Component {
   search(a = null){
     if(this.state.loading === true){
       axios.get(`/find?title=${this.state.search}`)
-      .then(response =>{
+      .then(result => {
+        console.log(result);
+        if (result.data == "") {
+          this.setState ({ 
+            mangas: "none",
+            loading: false
+          });
+          return;
+        }
         this.setState({
-          mangas: response.data,
+          mangas: result.data,
           loading: false
         })
       }).catch(err=>{
@@ -91,7 +99,8 @@ export default class SearchManga extends Component {
               <th>Actions</th>
             </tr>
           </thead>
-          {mangas.map((manga) => (
+          { this.state.mangas === "none" ? (<tr><td colspan="5" className="text-center">No such manga is found in database. Please make sure the name is correct and same with the record in database, or save the manga first.</td></tr>) :
+          mangas.map((manga) => (
             <tbody key="manga.key">
             <tr>
               <td><img src={manga.posterImg} width="44px" height="67px" alt="poster"/></td>

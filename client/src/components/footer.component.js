@@ -6,19 +6,8 @@ export default class Navbar extends Component {
   render() {
     return (
       <footer className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <Link to="/" className="navbar-brand">Manga & Anime API</Link>
+        <Link to="#" className="navbar-brand" style={{pointerEvents: "none"}}>Manga & Anime API</Link>
         <div className="collpase navbar-collapse">
-        <ul className="navbar-nav mr-auto">
-          <li className="navbar-item">
-          <Link to="/insert" className="nav-link">Insert new manga</Link>
-          </li>
-          <li className="navbar-item">
-          <Link to="/search" className="nav-link">Search manga</Link>
-          </li>
-          <li className="navbar-item">
-          <Link to="/delete" className="nav-link">Delete manga</Link>
-          </li>
-        </ul>
         </div>
         <div className="text-white">
           Created by Si Kai

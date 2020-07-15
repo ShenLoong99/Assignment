@@ -16,11 +16,15 @@ export default class DeleteManga extends Component {
   }
 
   componentDidMount() {
-    axios.get('/getAllData/')
-      .then(response => {
-        this.setState({ 
-          mangas: response.data 
-        })
+    axios.get('/getAllData')
+      .then(result => {
+        console.log(result.data);
+        if (result.data == "") {
+          this.setState ({ mangas: "none" });
+          document.getElementById("delete-all").style.display = "none";
+          return;
+        }
+        this.setState({ mangas: result.data })
       })
       .catch((error) => {
         console.log(error);
@@ -43,7 +47,7 @@ export default class DeleteManga extends Component {
       }
     }
     if (this.state.reload === true) {
-      window.location = '/';
+      window.location = '/mangaList';
     }
   }
 
@@ -55,7 +59,7 @@ export default class DeleteManga extends Component {
         this.setState({reload: true});
       });
       if (this.state.reload === true) {
-        window.location = '/';
+        window.location = '/delete';
       }
   }
 
@@ -65,7 +69,7 @@ export default class DeleteManga extends Component {
       <div>
         <div className="row pb-2">
           <h3 className="ml-3 ">Manga records in Database</h3>
-          <Button className="btn btn-primary ml-5" onClick={() => { if (window.confirm('Are you sure you want to delete all records?')) this.deleteAll()}}>Delete All</Button>
+          <Button id="delete-all" className="btn btn-primary ml-5" onClick={() => { if (window.confirm('Are you sure you want to delete all records?')) this.deleteAll()}}>Delete All</Button>
         </div>
         <table className="table">
           <thead className="thead-light">
@@ -77,7 +81,8 @@ export default class DeleteManga extends Component {
               <th>Actions</th>
             </tr>
           </thead>
-            {mangas.map((manga) => (
+          { this.state.mangas === "none" ? (<tr><td colspan="5" className="text-center">No mangas saved at the moment!</td></tr>) :
+            (mangas.map((manga) => (
               <tbody key="manga._id">
                 {/* { this.mangaList() } */}
               <tr>
@@ -90,7 +95,7 @@ export default class DeleteManga extends Component {
                 </td>
               </tr>
               </tbody>
-            ))}
+            )))}
         </table>
       </div>
     )
