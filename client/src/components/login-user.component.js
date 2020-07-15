@@ -48,7 +48,7 @@ export default class RegisterUser extends Component {
       .then ((jsonData) => {
         if (jsonData) {  
           alert("Login successful");
-          window.location = "/insert";
+          window.location = "/mangaList";
         }
         else {
           alert("Your username or password is wrong. Please try again.");
