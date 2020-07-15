@@ -21,7 +21,7 @@ export default class RegisterUser extends Component {
     axios.get('/checkCookie')
     .then((response) => {
       if (response.data === true) {
-        windows.location = "/mangaList";
+        window.location = "/mangaList";
       }
     })
     .catch((error) => {
