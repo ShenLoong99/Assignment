@@ -25,11 +25,11 @@ export default class RegisterUser extends Component {
     this.setState({ pass: e.target.value });
   }
 
-  onSubmit(e) {
+  onSubmit = async (e) => {
     e.preventDefault();
     var username= this.state.username;
     var pwd = this.state.pass;
-    axios.get(`/login?user=${username}&pass=${pwd}`)
+    await axios.get(`/login?user=${username}&pass=${pwd}`)
       .then((response) => {
         console.log(response.data);
         if (response.data) {  
