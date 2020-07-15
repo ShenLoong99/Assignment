@@ -82,10 +82,7 @@ app.get('/add',(req,res)=>{
 app.get('/delete',(req,res)=>{
     id = req.query.id;
     console.log(id);
-    if (id == "undefined" || id == null || id == "") {
-        res.send("<h1>Error! ID must not be empty!</h1>");
-    }
-    else {
+    if (id != "undefined" && id != null && id != "") {
         Record.deleteOne({ _id: id }, function (err) {
             if (err) return handleError(err);
             // deleted at most one tank document
