@@ -17,17 +17,17 @@ export default class RegisterUser extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentDidMount() {
-    axios.get('/checkCookie')
-    .then((response) => {
-      if (response.data === true) {
-        window.location = "/mangaList";
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }
+  // componentDidMount() {
+  //   axios.get('/checkCookie')
+  //   .then((response) => {
+  //     if (response.data === true) {
+  //       window.location = "/mangaList";
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   })
+  // }
 
   onChangeUsername = (e) => {
     this.setState({ username: e.target.value });
@@ -41,10 +41,12 @@ export default class RegisterUser extends Component {
     e.preventDefault();
     var username= this.state.username;
     var pwd = this.state.pass;
-    await axios.get(`/login?user=${username}&pass=${pwd}`)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data) {  
+    await fetch(`/login?user=${username}&pass=${pwd}`)
+      .then((res) => {
+        return res.json();
+      })
+      .then ((jsonData) => {
+        if (jsonData) {  
           alert("Login successful");
           window.location = "/mangaList";
         }
