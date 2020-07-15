@@ -21,8 +21,8 @@ export default class MangaList extends Component {
     this.state = {mangas: []};
   }
 
-  componentDidMount() {
-    axios.get('/getAllData')
+  async componentDidMount() {
+    await axios.get('/getAllData')
       .then(result => {
         console.log(result.data);
         if (result.data == "") {
