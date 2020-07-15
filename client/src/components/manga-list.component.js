@@ -22,18 +22,18 @@ export default class MangaList extends Component {
   }
 
   async componentDidMount() {
-    await axios.get('/getAllData')
-      .then(result => {
-        console.log(result.data);
-        if (result.data == "") {
-          this.setState ({ mangas: "none" });
-          return;
-        }
-        this.setState({ mangas: result.data })
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    // await axios.get('/getAllData')
+    //   .then(result => {
+    //     console.log(result.data);
+    //     if (result.data == "") {
+    //       this.setState ({ mangas: "none" });
+    //       return;
+    //     }
+    //     this.setState({ mangas: result.data })
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
   }   
 
   mangaList() {
