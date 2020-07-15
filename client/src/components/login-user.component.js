@@ -34,7 +34,7 @@ export default class RegisterUser extends Component {
         console.log(response.data);
         if (response.data) {  
           alert("Login successful");
-          window.location.href = "/mangaList";
+          window.location = "/mangaList";
         }
         else {
           alert("Your username or password is wrong. Please try again.");
