@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const { Double } = require('bson');
-
+const express = require("express");
+const app = express();
 const db = "mongodb+srv://ShenLoong99:123@webapiassignment-x0qmy.mongodb.net/MangaAPI?retryWrites=true&w=majority";
+const path = require("path");
 
 //Connect to MongoDB database
 mongoose
@@ -13,7 +15,7 @@ mongoose
 		console.log("Error Connected to database");
 	});
 
-// A schema matched the table in your database
+// manga schema
 const mangaSchema = new mongoose.Schema({
     mangaName: {type: String},
     userId: {type: String},
@@ -29,11 +31,20 @@ const mangaSchema = new mongoose.Schema({
     posterImg: {type: String}
 });
 
+// user schema
 const userSchema = new mongoose.Schema({
     username: {type: String},
     email: {type: String},
     password: {type: String}
 });
+
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static("client/build"));
+
+	app.get("*", (req, res) => {
+		res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+	});
+}
 
 const Record = mongoose.model('manga', mangaSchema);
 const User = mongoose.model('user', userSchema);
