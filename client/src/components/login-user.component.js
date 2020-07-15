@@ -17,6 +17,18 @@ export default class RegisterUser extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentDidMount() {
+    axios.get('/checkCookie')
+    .then((response) => {
+      if (response.data === true) {
+        windows.location = "/mangaList";
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
   onChangeUsername = (e) => {
     this.setState({ username: e.target.value });
   }
