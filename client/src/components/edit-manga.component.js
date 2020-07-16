@@ -122,7 +122,6 @@ export default class EditManga extends Component {
     mangaData[10] = this.state.airing; mangaAtt[10] = 'airing';
 
     for (var i = 0; i < mangaData.length; i++) {
-      console.log(mangaAtt[i] + mangaData[i]);
       axios.get('/update?id=' + id + '&att=' + mangaAtt[i] + '&edit=' + mangaData[i])
       .then(res => console.log(res.data));
     }

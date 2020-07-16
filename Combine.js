@@ -3,7 +3,6 @@ const User = require('./Connect').User;
 const express = require('express');
 const app = express();
 const axios = require('axios');
-// const bcrypt = require("bcryptjs");
 const path = require('path'); // include for heroku
 
 // const title = 'Boku no Pico';
@@ -15,6 +14,9 @@ var username, email, password;
 var cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
+// Calling API
+// add data
+// http://localhost:5000/add?title=lupin
 app.get('/add',(req,res)=>{
     title = req.query.title;
     const querystr = `https://kitsu.io/api/edge/manga?filter[text]=${title}`;
@@ -78,6 +80,60 @@ app.get('/add',(req,res)=>{
     res.send("<h1>Adding data<h1>");
 });
 
+// show data from the API
+// http://localhost:5000/show?title=pokemon
+app.get('/show',(req,res)=>{
+    title = req.query.title;
+    var mangaData = {
+        mangaName: '',
+        mangaJapName: '',
+        mangaCreatedAt: '',
+        mangaRating: '',
+        mangaSynopsis: '',
+        posterImg: '',
+        animeGenres: '',
+        animeStartDate: '',
+        animeEpisodes: '',
+        animeScore: '',
+        animeAiring: ''
+    }
+    const querystr = `https://kitsu.io/api/edge/manga?filter[text]=${title}`;
+    axios.get(querystr).then(   (response) =>{
+        if (response.data.data[0].attributes.titles.en != null) 
+            mangaData.mangaName = response.data.data[0].attributes.titles.en;
+        else 
+            mangaData.mangaName = response.data.data[0].attributes.titles.en_jp;
+        mangaData.mangaJapName = response.data.data[0].attributes.titles.ja_jp;
+        mangaData.posterImg = response.data.data[0].attributes.posterImage.original;
+        mangaData.mangaCreatedAt = response.data.data[0].attributes.createdAt;
+        mangaData.mangaRating = response.data.data[0].attributes.averageRating;
+        mangaData.mangaSynopsis = response.data.data[0].attributes.synopsis;
+        mangaID = response.data.data[0].id;
+        
+        const querystr1 = `https://kitsu.io/api/edge/manga/${mangaID}/genres`;
+
+        axios.get(querystr1).then(  (response) =>{
+            limit = response.data.data.length;
+            animeGenres = response.data.data[0].attributes.name;
+            for (i = 1; i < limit; i++) {
+                animeGenres += ", " + response.data.data[i].attributes.name;
+            }
+            mangaData.animeGenres = animeGenres;
+
+            const querystr2 = `https://api.jikan.moe/v3/search/anime?q=${title}`;
+
+            axios.get(querystr2).then(  (response) =>{
+                mangaData.animeStartDate = response.data.results[0].start_date;
+                mangaData.animeEpisodes = response.data.results[0].episodes;
+                mangaData.animeScore = response.data.results[0].score;
+                mangaData.animeAiring = response.data.results[0].airing;
+                res.send(mangaData);
+            });
+        });
+    });
+});
+
+// delete single document
 // http://localhost:5000/delete?id=
 app.get('/delete',(req,res)=>{
     id = req.query.id;
@@ -92,6 +148,7 @@ app.get('/delete',(req,res)=>{
     }
 });
 
+// update multiple field in document
 // http://localhost:5000/update?id=&att=&edit=
 app.get('/update', (req,res) => {
     var id = req.query.id;
@@ -183,6 +240,8 @@ app.get('/getAllData', (req, res) => {
       });
 });
 
+// find document based on id or title
+// http://localhost:5000/find?title=Pokemon%20Heroes // http://localhost:5000/find?id=5f09dd65862e5929000758a8
 app.get('/find', (req, res) => {
     id = req.query.id;
     title = req.query.title;
@@ -204,58 +263,6 @@ app.get('/find', (req, res) => {
         res.status(400).json(error);
       });
     }
-});
-
-// http://localhost:5000/show?title=pokemon
-app.get('/show',(req,res)=>{
-    title = req.query.title;
-    var mangaData = {
-        mangaName: '',
-        mangaJapName: '',
-        mangaCreatedAt: '',
-        mangaRating: '',
-        mangaSynopsis: '',
-        posterImg: '',
-        animeGenres: '',
-        animeStartDate: '',
-        animeEpisodes: '',
-        animeScore: '',
-        animeAiring: ''
-    }
-    const querystr = `https://kitsu.io/api/edge/manga?filter[text]=${title}`;
-    axios.get(querystr).then(   (response) =>{
-        if (response.data.data[0].attributes.titles.en != null) 
-            mangaData.mangaName = response.data.data[0].attributes.titles.en;
-        else 
-            mangaData.mangaName = response.data.data[0].attributes.titles.en_jp;
-        mangaData.mangaJapName = response.data.data[0].attributes.titles.ja_jp;
-        mangaData.mangaCreatedAt = response.data.data[0].attributes.createdAt;
-        mangaData.mangaRating = response.data.data[0].attributes.averageRating;
-        mangaData.mangaSynopsis = response.data.data[0].attributes.synopsis;
-        mangaID = response.data.data[0].id;
-        
-        const querystr1 = `https://kitsu.io/api/edge/manga/${mangaID}/genres`;
-
-        axios.get(querystr1).then(  (response) =>{
-            limit = response.data.data.length;
-            animeGenres = response.data.data[0].attributes.name;
-            for (i = 1; i < limit; i++) {
-                animeGenres += ", " + response.data.data[i].attributes.name;
-            }
-            mangaData.animeGenres = animeGenres;
-
-            const querystr2 = `https://api.jikan.moe/v3/search/anime?q=${title}`;
-
-            axios.get(querystr2).then(  (response) =>{
-                mangaData.posterImg = response.data.results[0].image_url;
-                mangaData.animeStartDate = response.data.results[0].start_date;
-                mangaData.animeEpisodes = response.data.results[0].episodes;
-                mangaData.animeScore = response.data.results[0].score;
-                mangaData.animeAiring = response.data.results[0].airing;
-                res.send(mangaData);
-            });
-        });
-    });
 });
 
 // Parse URL-encoded bodies (as sent by HTML forms)
@@ -346,7 +353,7 @@ app.post("/login", async (req, res) => {
 
 // logout code
 // http://localhost:5000/logout
-app.get('/logout', (req, res) => {
+app.post('/logout', async (req, res) => {
     // clear auth-token cookie and user id cookie
 	res
     .clearCookie("uname")

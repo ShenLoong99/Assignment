@@ -22,18 +22,29 @@ export default class Navbar extends Component {
   }
 
   logout = async () => {
-    await axios.get('/logout')
-      .then((response) => {
-        console.log(response.data);
-        if (response.data) {  
-          alert("Logout successful");
-          window.location.href = "/";
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  }
+		await fetch("/logout", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then((res) => {
+				return res.json();
+			})
+			.then((jsonData) => {
+				console.log(jsonData);
+				if (jsonData) {
+					alert("Logout successful");
+					window.location = "/";
+				} else {
+					alert("Logout failed");
+					window.location = "/mangaList";
+				}
+			})
+			.catch((error) => {
+				alert("Error: " + error);
+			});
+	};
 
   render() {
     return (
@@ -54,7 +65,7 @@ export default class Navbar extends Component {
           <Link to="/viewUser" className="nav-link">Account</Link>
           </li>
           <li className="navbar-item" id="navbar-item-5">
-          <Link to="/" onClick={this.logout.bind(this)} className="nav-link">Logout</Link>
+          <Link onClick={() => { if (window.confirm('Are you sure you want to logout?')) this.logout()}} className="nav-link">Logout</Link>
           </li>
         </ul>
         </div>

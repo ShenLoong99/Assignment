@@ -19,6 +19,8 @@ export default class ViewNewManga extends Component {
         synopsis: '',
         airing: ''
     };
+
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -43,10 +45,23 @@ export default class ViewNewManga extends Component {
       })
   }
 
+  onSubmit = async (e) => {
+    e.preventDefault();
+    await axios.get(`/add?title=${this.state.mangaName}`)
+      .then(res => {
+        console.log(res.data)
+        alert("Insert successful!");
+        window.location = "/mangaList";
+      })
+      .catch((error) => {
+        alert("Error: " + error);
+      });
+  }
+
   render() {
     return (
       <div>
-        <div className="row" key="manga.key">
+        <div className="row">
           <div className="col-sm-8">
             <h2>{this.state.mangaName}</h2> 
             <img src={this.state.poster} className="img-responsive" style={{width: "80%", height: "80%"}} alt="poster" />
@@ -94,7 +109,10 @@ export default class ViewNewManga extends Component {
                 </tr>
               </tbody>
             </table>
-            <Link to={"/insert"} className="btn btn-primary">Back</Link>
+            <form onSubmit={this.onSubmit}>
+              <input type="submit" value="Insert" className="btn btn-primary mr-5" />
+              <Link to={"/insert"} className="btn btn-primary">Back</Link>
+            </form>
           </div>
         </div>
       </div>

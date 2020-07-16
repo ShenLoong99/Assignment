@@ -32,35 +32,36 @@ export default class DeleteManga extends Component {
   }
 
   // Delete all documents in mongoDB function
-  deleteAll() {
+  deleteAll = async () => {
     this.state.loading = true;
     var id;
     if (this.state.loading === true) {
       for (var i = 0; i < this.state.mangas.length; i++) {
           console.log(this.state.mangas[i]._id);
           id = this.state.mangas[i]._id;
-          axios.get(`/delete?id=${id}`)
+          await axios.get(`/delete?id=${id}`)
           .then(res => {
             console.log(res.data)
-            this.setState({reload: true});
+            window.location = '/mangaList';
+          })
+          .catch((error) => {
+            alert("Error: " + error);
           });
       }
     }
-    if (this.state.reload === true) {
-      window.location = '/mangaList';
-    }
+      
   }
 
   // Delete one document in mongoDB function
-  deleteOne(id) {
-    axios.get(`/delete?id=${id}`)
+  deleteOne = async (id) => {
+    await axios.get(`/delete?id=${id}`)
       .then(res => {
         console.log(res.data)
-        this.setState({reload: true});
-      });
-      if (this.state.reload === true) {
-        window.location = '/delete';
-      }
+        window.location = '/mangaList';
+      })
+      .catch((error) => {
+				alert("Error: " + error);
+			});
   }
 
   render() {
