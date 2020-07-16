@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 export default class SearchManga extends Component {
@@ -10,62 +9,14 @@ export default class SearchManga extends Component {
     this.state = {
       mangas: [],
       search: ''
-      // loading: false,
-      // loading1: false
     };
-
-    // this.search = this.search.bind(this);
-    // this.onClick2 = this.onClick2.bind(this);
-    // this.keyPress = this.keyPress.bind(this);
-    // this.search();
   }
-
-  // componentDidMount() {
-  //   this.search();
-  // }
-
-  // search(a = null){
-  //   if(this.state.loading === true){
-  //     axios.get(`/find?title=${this.state.search}`)
-  //     .then(result => {
-  //       console.log(result);
-  //       if (result.data == "") {
-  //         this.setState ({ 
-  //           mangas: "none",
-  //           loading: false
-  //         });
-  //         return;
-  //       }
-  //       this.setState({
-  //         mangas: result.data,
-  //         loading: false
-  //       })
-  //     }).catch(err=>{
-  //       console.log(err)
-  //     })
-  //   }
-  // }
 
   // user iput
 	handleChange = (e) => {
 		e.preventDefault();
 		this.setState({ search: e.target.value });
   };
-  
-  // when click search button will call search function
-  // async onClick2(e) {
-  //   this.state.loading = true;
-  //   await this.search('1');
-  // }
-
-  // keyPress(e) {
-  //   e.preventDefault();
-  //   if(e.key === 'Enter'){
-  //     this.onClick2();
-  //      console.log('value', e.target.value);
-  //   }
-  //   else{}
-  // }
 
   onSubmit = async (e) => {
     e.preventDefault();
@@ -76,7 +27,7 @@ export default class SearchManga extends Component {
       })
     }).catch(err=>{
       console.log(err)
-    })
+    });
   }
 
   render() {
