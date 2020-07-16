@@ -148,6 +148,17 @@ app.get('/delete',(req,res)=>{
     }
 });
 
+// delete all documents by the user ID
+// http://localhost:5000/deleteAll?id=
+// app.get('/deleteAll',(req,res)=>{
+//     Record.deleteMany({ _id: req.cookies["uid"] }, function (err) {
+//         if (err) return handleError(err);
+//         // deleted at most one tank document
+//     });
+    
+//         res.send("<h1>Deleting one data</h1>");
+// });
+
 // update multiple field in document
 // http://localhost:5000/update?id=&att=&edit=
 app.get('/update', (req,res) => {

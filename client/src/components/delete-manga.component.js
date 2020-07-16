@@ -11,8 +11,8 @@ export default class DeleteManga extends Component {
       reload: false,
       mangas: []
     };
-    this.deleteAll();
-    this.deleteOne();
+    // this.deleteAll();
+    // this.deleteOne();
   }
 
   componentDidMount() {
@@ -32,37 +32,36 @@ export default class DeleteManga extends Component {
   }
 
   // Delete all documents in mongoDB function
-  deleteAll = async () => {
-    this.state.loading = true;
-    var id;
-    if (this.state.loading === true) {
-      for (var i = 0; i < this.state.mangas.length; i++) {
-          console.log(this.state.mangas[i]._id);
-          id = this.state.mangas[i]._id;
-          await axios.get(`/delete?id=${id}`)
-          .then(res => {
-            console.log(res.data)
-            window.location = '/mangaList';
-          })
-          .catch((error) => {
-            alert("Error: " + error);
-          });
-      }
-    }
-      
-  }
+  // deleteAll = async () => {
+  //   this.state.loading = true;
+  //   var id;
+  //   if (this.state.loading === true) {
+  //     for (var i = 0; i < this.state.mangas.length; i++) {
+  //         console.log(this.state.mangas[i]._id);
+  //         id = this.state.mangas[i]._id;
+  //         await axios.get(`/delete?id=${id}`)
+  //         .then(res => {
+  //           console.log(res.data)
+  //           window.location = '/mangaList';
+  //         })
+  //         .catch((error) => {
+  //           alert("Error: " + error);
+  //         });
+  //     }
+  //   }
+  // }
 
   // Delete one document in mongoDB function
-  deleteOne = async (id) => {
-    await axios.get(`/delete?id=${id}`)
-      .then(res => {
-        console.log(res.data)
-        window.location.reload();
-      })
-      .catch((error) => {
-				alert("Error: " + error);
-			});
-  }
+  // deleteOne = async (id) => {
+  //   await axios.get(`/delete?id=${id}`)
+  //     .then(res => {
+  //       console.log(res.data)
+  //       window.location.reload();
+  //     })
+  //     .catch((error) => {
+	// 			alert("Error: " + error);
+	// 		});
+  // }
 
   render() {
     var {mangas} = this.state;
