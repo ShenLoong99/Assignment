@@ -13,6 +13,7 @@ import Footer from "./components/footer.component";
 import LoginUser from "./components/login-user.component";
 import RegisterUser from "./components/register-user.component";
 import ViewUser from "./components/view-user.component";
+import ViewNewManga from "./components/view-new-manga.component";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <Route path="/search" component={SearchManga} />
       <Route path="/delete" component={DeleteManga} />
       <Route path="/viewUser" component={ViewUser} />
+      <Route path="/viewNewManga/:mangaName" component={ViewNewManga} />
       <br/>
       <Footer />
       </div>

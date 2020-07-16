@@ -81,11 +81,10 @@ export default class DeleteManga extends Component {
               <th>Actions</th>
             </tr>
           </thead>
+          <tbody>
           { this.state.mangas === "none" ? (<tr><td colspan="5" className="text-center">No mangas saved at the moment!</td></tr>) :
             (mangas.map((manga) => (
-              <tbody key="manga._id">
-                {/* { this.mangaList() } */}
-              <tr>
+              <tr key="manga._id">
                 <td><img src={manga.posterImg} width="44px" height="67px" alt="poster"/></td>
                 <td>{manga.mangaName}</td>
                 <td>{manga.mangaCreatedAt.substring(0,10)}</td>
@@ -94,8 +93,8 @@ export default class DeleteManga extends Component {
                   <Button className="btn btn-primary" onClick={(e) => { if (window.confirm('Are you sure you want to delete this record?')) this.deleteOne(manga._id) } }>Delete</Button>
                 </td>
               </tr>
-              </tbody>
             )))}
+            </tbody>
         </table>
       </div>
     )

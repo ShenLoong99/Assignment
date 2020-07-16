@@ -7,7 +7,6 @@ export default class EditManga extends Component {
     super(props);
 
     this.state = {
-      mangas: [],
       id: '',
       loading1: false,
       mangaName: '',

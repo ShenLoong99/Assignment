@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 export default class InsertManga extends Component {
   constructor(props) {
@@ -63,13 +64,14 @@ export default class InsertManga extends Component {
   
   // when click search button will call search function
   async onClick2(e) {
+    e.preventDefault();
     this.state.loading = true;
     await this.search('1');
   }
 
   keyPress(e){
-    console.log(this)
     e.preventDefault();
+    console.log(this)
     console.log(e.key)
     if(e.key === 'Enter'){
       this.onClick2();
@@ -119,7 +121,7 @@ export default class InsertManga extends Component {
               <td>{manga.mangaCreatedAt.substring(0,10)}</td>
               <td>{manga.animeGenres}</td>
               <td>
-                <Button className="btn btn-primary" onClick={(e) => this.insert(manga.mangaName, e)}>{IsLoading1 ? 'Inserting...' : 'Insert'}</Button>
+                <Button className="btn btn-primary" onClick={(e) => this.insert(manga.mangaName, e)}>{IsLoading1 ? 'Inserting...' : 'Insert'}</Button> <Link className="btn btn-primary" to={"/viewNewManga/" + manga.mangaName}>View</Link>
               </td>
             </tr>
             </tbody>

@@ -34,7 +34,7 @@ export default class ViewUser extends Component {
           </thead>
           <tbody>
              {this.state.users.map((user) => (
-                <tr>
+                <tr key={user._id}>
                 <td>{user._id}</td>
                 <td>{user.username}</td>
                 <td>{user.email}</td>

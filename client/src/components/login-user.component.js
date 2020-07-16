@@ -29,22 +29,35 @@ export default class RegisterUser extends Component {
     e.preventDefault();
     var username= this.state.username;
     var pwd = this.state.pass;
-    await fetch(`/login?user=${username}&pass=${pwd}`)
-      .then((res) => {
-        return res.json();
-      })
-      .then ((jsonData) => {
-        if (jsonData) {  
-          alert("Login successful");
-          window.location = "/mangaList";
-        }
-        else {
-          alert("Your username or password is wrong. Please try again.");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    // check login credentials
+		await fetch("/login", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				user: {
+					username: username,
+					password: pwd,
+				},
+			}),
+		})
+			.then((res) => {
+				console.log(JSON.stringify(res.headers));
+				return res.json();
+			})
+			.then((jsonData) => {
+				console.log(jsonData);
+				if (jsonData) {
+					alert("Login successful");
+					window.location.href = "/mangaList";
+				} else {
+					alert("Email or password is incorrect");
+				}
+			})
+			.catch((error) => {
+				alert("Error: " + error);
+			});
   }
 
   render() {

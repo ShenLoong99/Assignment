@@ -206,6 +206,7 @@ app.get('/find', (req, res) => {
     }
 });
 
+// http://localhost:5000/show?title=pokemon
 app.get('/show',(req,res)=>{
     title = req.query.title;
     var mangaData = {
@@ -256,6 +257,12 @@ app.get('/show',(req,res)=>{
         });
     });
 });
+
+// Parse URL-encoded bodies (as sent by HTML forms)
+app.use(express.urlencoded());
+
+// Parse JSON bodies (as sent by API clients)
+app.use(express.json());
 
 // User account mongoose action
 // http://localhost:5000/createUser?user=xiaoMing&email=123@gmail.com&pass=asd
@@ -316,29 +323,25 @@ app.get('/checkSameData', (req, res) => {
 });
 
 // http://localhost:5000/login?user=ShenLoong99&pass=P@$$vv0rD
-app.get('/login', (req, res) => {
-    username = req.query.user;
-    password = req.query.pass;
-    var passwordHash = require('password-hash');
+app.post("/login", async (req, res) => {
+    // check if email exist
+	const user = await User.findOne({ username: req.body.user.username });
+	if (!user) {
+		return res.send(false);
+	}
 
-    User.findOne({ username: username })
-    .then ((response) => {
-        console.log(response);
-        // check if password correct
-        if (!passwordHash.verify(password, response.password)) { 
-            return res.send(false);
-        }
-        else if (passwordHash.verify(password, response.password)) { 
-            // save username, email and user id to cookie
-            res.cookie("uname", response.username);
-            res.cookie("uid", response._id);
-            res.cookie("uemail", response.email);
-            return res.send(true);
-        }
-    })
-    .catch((error) => {
-        res.status(400).json(error);
-    });	
+    // check if password correct
+    var passwordHash = require('password-hash');
+	const validPsw = passwordHash.verify(req.body.user.password, user.password);
+	if (!validPsw) {
+		return res.send(false);
+	}
+
+	// save token and user id to cookie
+	res.cookie("uid", user._id); // to verify if user have login
+	res.cookie("uname", user.username); // while be used while saving artist
+	res.cookie("uemail", user.email); // will be display on navigation bar (logged in as UserName)
+	res.send(true);
 });
 
 // logout code
@@ -389,11 +392,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const port = process.env.PORT || 5000;
-
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
   });
-
-//   app.listen(process.env.PORT || 8080, function(){
-//     console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-//   });
