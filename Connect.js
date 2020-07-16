@@ -12,7 +12,7 @@ mongoose
 		console.log("Connected to database");
 	})
 	.catch(() => {
-		console.log("Error Connected to database");
+		console.log("Error can't connect to database");
 	});
 
 // manga schema
