@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { Double } = require('bson');
 const express = require("express");
 const app = express();
 const db = "mongodb+srv://ShenLoong99:123@webapiassignment-x0qmy.mongodb.net/MangaAPI?retryWrites=true&w=majority";
