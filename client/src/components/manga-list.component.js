@@ -9,6 +9,7 @@ export default class MangaList extends Component {
     this.state = {mangas: []};
   }
 
+  // signals that the all components have rendered properly
   componentDidMount = async () => {
     await axios.get('/getAllData')
       .then(result => {

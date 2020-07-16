@@ -42,21 +42,25 @@ export default class RegisterUser extends Component {
     var email = this.state.email;
     var username = this.state.username;
     var password = this.state.pass1;
-    var verify = false;
+    var verify;
     if (this.state.pass1 !== this.state.pass2) {
         alert("Please make sure the passwords are the same!");
     }
     await axios.get('/checkSameData?user=' + username)
         .then(result => {
             console.log(result);
-            this.setState({ verify: result.data })
-            console.log(verify);
+            if (result.data) {
+              verify = true;
+            }
+            else {
+              verify = false;
+            }
         })
         .catch((error) => {
             console.log(error);
         })
-    if (verify == true) {
-      alert("The username or the email is used by others. Please use another email or username.");
+    if (verify) {
+      alert("The username is used by others. Please use another username.");
     }
     else {
       axios.get(`/createUser?user=${username}&email=${email}&pass=${password}`)

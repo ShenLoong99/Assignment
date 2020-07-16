@@ -307,9 +307,9 @@ app.get('/getUserData', (req, res) => {
 // get all user data
 // http://localhost:5000/getUserData
 app.get('/checkSameData', (req, res) => {
-    username = req.query.user;
-    User.find({ username: username })  
+    User.findOne({ username: req.query.user })  
       .then(response => {
+        console.log(response);
         if (response) {
             return res.send(true);
         }

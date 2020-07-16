@@ -93,7 +93,7 @@ export default class InsertManga extends Component {
             <input  type="text"
                 required
                 className="form-control"
-                placeholder="Search for manga"
+                placeholder="Search for manga, do not press enter to search, click the search button"
                 name="search"
                 onChange={this.handleChange}
                 />

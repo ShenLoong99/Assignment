@@ -79,7 +79,7 @@ export default class SearchManga extends Component {
             <input  type="text"
                 required
                 className="form-control"
-                placeholder="Search for manga, make sure name is exactly the same in database"
+                placeholder="Search for manga, make sure name is exactly the same in database, do not press enter to search, click the search button"
                 name="search"
                 onChange={this.handleChange}
                 />
