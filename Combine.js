@@ -165,7 +165,7 @@ app.get('/update', (req,res) => {
         });
     }
     else {
-        return res.send("Error! Must include attribute or edit in URL to know what to edit!!! Attributes are mangaName, mangaJapName, mangaCreatedAt, mangaRating, mangaSynopsis, animeStartDate, animeEpisodes, animeScore, animeAiring and animeGenres");
+        res.send("Error! Must include attribute or edit in URL to know what to edit!!! Attributes are mangaName, mangaJapName, mangaCreatedAt, mangaRating, mangaSynopsis, animeStartDate, animeEpisodes, animeScore, animeAiring and animeGenres");
     }
     
     res.send("<h1>Updating data<h1>");
@@ -328,11 +328,12 @@ app.get('/login', (req, res) => {
         if (!passwordHash.verify(password, response.password)) { 
             return res.send(false);
         }
-        else { // save username, email and user id to cookie
+        else if (passwordHash.verify(password, response.password)) { 
+            // save username, email and user id to cookie
             res.cookie("uname", response.username);
             res.cookie("uid", response._id);
             res.cookie("uemail", response.email);
-            res.send(true);
+            return res.send(true);
         }
     })
     .catch((error) => {
