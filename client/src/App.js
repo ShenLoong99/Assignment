@@ -32,6 +32,8 @@ function App() {
         <Route path="/delete" component={DeleteManga} />
         <Route path="/viewUser" component={ViewUser} />
         <Route path="/viewNewManga/:mangaName" component={ViewNewManga} />
+        {/* if route not found */}
+			  <Route path="*" component={LoginUser} />
       </Switch>
       <br/>
       <Footer />

@@ -57,7 +57,7 @@ export default class DeleteManga extends Component {
     await axios.get(`/delete?id=${id}`)
       .then(res => {
         console.log(res.data)
-        window.location = '/mangaList';
+        window.location.reload();
       })
       .catch((error) => {
 				alert("Error: " + error);

@@ -51,7 +51,7 @@ export default class RegisterUser extends Component {
 					alert("Login successful");
 					window.location.href = "/mangaList";
 				} else {
-					alert("Email or password is incorrect");
+					alert("Username or password is incorrect. Please try again");
 				}
 			})
 			.catch((error) => {
