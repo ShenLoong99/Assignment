@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const Manga = props => (
   <tr>
-    <td><img src={props.manga.posterImg} width="44px" height="67px" alt="poster"/></td>
+    <td>Click view to see poster</td>
     <td>{props.manga.mangaName}</td>
     <td>{props.manga.mangaCreatedAt.substring(0,10)}</td>
     <td>{props.manga.animeGenres}</td>
