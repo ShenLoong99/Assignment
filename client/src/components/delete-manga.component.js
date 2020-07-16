@@ -21,7 +21,6 @@ export default class DeleteManga extends Component {
         console.log(result.data);
         if (result.data == "") {
           this.setState ({ mangas: "none" });
-          document.getElementById("delete-all").style.display = "none";
           return;
         }
         this.setState({ mangas: result.data })
@@ -33,21 +32,20 @@ export default class DeleteManga extends Component {
 
   // Delete all documents in mongoDB function
   deleteAll = async () => {
-    this.state.loading = true;
-    var id;
-    if (this.state.loading === true) {
-      for (var i = 0; i < this.state.mangas.length; i++) {
-          console.log(this.state.mangas[i]._id);
-          id = this.state.mangas[i]._id;
-          await axios.get(`/delete?id=${id}`)
-          .then(res => {
-            console.log(res.data)
-            window.location = '/mangaList';
-          })
-          .catch((error) => {
-            alert("Error: " + error);
-          });
-      }
+    var fin = false;
+    for (var i = 0; i < this.state.mangas.length; i++) {
+        var id = this.state.mangas[i]._id;
+        await axios.get(`/delete?id=${id}`)
+        .then(res => {
+          console.log(res.data)
+          fin = true;
+        })
+        .catch((error) => {
+          alert("Error: " + error);
+        });
+    }
+    if (fin == true) {
+      window.location = '/mangaList';
     }
   }
 
