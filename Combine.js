@@ -165,7 +165,7 @@ app.get('/update', (req,res) => {
         });
     }
     else {
-        res.send("Error! Must include attribute or edit in URL to know what to edit!!! Attributes are mangaName, mangaJapName, mangaCreatedAt, mangaRating, mangaSynopsis, animeStartDate, animeEpisodes, animeScore, animeAiring and animeGenres");
+        return res.send("Error! Must include attribute or edit in URL to know what to edit!!! Attributes are mangaName, mangaJapName, mangaCreatedAt, mangaRating, mangaSynopsis, animeStartDate, animeEpisodes, animeScore, animeAiring and animeGenres");
     }
     
     res.send("<h1>Updating data<h1>");
