@@ -5,7 +5,7 @@ const app = express();
 const axios = require('axios');
 const path = require('path'); // include for heroku
 
-// const title = 'Boku no Pico';
+// variables declaration
 var mangaName, mangaJapName, mangaCreatedAt, mangaRating, mangaSynopsis, mangaID, limit;
 var animeStartDate, animeEpisodes, animeScore, animeAiring, animeGenres;
 var username, email, password;
@@ -148,17 +148,6 @@ app.get('/delete',(req,res)=>{
     }
 });
 
-// delete all documents by the user ID
-// http://localhost:5000/deleteAll?id=
-// app.get('/deleteAll',(req,res)=>{
-//     Record.deleteMany({ _id: req.cookies["uid"] }, function (err) {
-//         if (err) return handleError(err);
-//         // deleted at most one tank document
-//     });
-    
-//         res.send("<h1>Deleting one data</h1>");
-// });
-
 // update multiple field in document
 // http://localhost:5000/update?id=&att=&edit=
 app.get('/update', (req,res) => {
@@ -277,7 +266,7 @@ app.get('/find', (req, res) => {
 });
 
 // Parse URL-encoded bodies (as sent by HTML forms)
-app.use(express.urlencoded());
+// app.use(express.urlencoded());
 
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());

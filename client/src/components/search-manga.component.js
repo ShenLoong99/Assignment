@@ -22,9 +22,11 @@ export default class SearchManga extends Component {
     e.preventDefault();
     await axios.get(`find?title=${this.state.search}`)
     .then(response =>{
-      this.setState({
-        mangas: response.data
-      })
+      if (response.data == "") {
+        this.setState ({ mangas: "none" });
+        return;
+      }
+      this.setState({ mangas: response.data })
     }).catch(err=>{
       console.log(err)
     });
