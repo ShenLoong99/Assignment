@@ -50,8 +50,8 @@ export default class DeleteManga extends Component {
   }
 
   // Delete one document in mongoDB function
-  deleteOne = async (id) => {
-    await axios.get(`/delete?id=${id}`)
+  deleteOne = (id) => {
+    axios.get(`/delete?id=${id}`)
       .then(res => {
         console.log(res.data)
         window.location.reload();

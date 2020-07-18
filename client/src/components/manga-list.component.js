@@ -13,7 +13,6 @@ export default class MangaList extends Component {
   componentDidMount = async () => {
     await axios.get('/getAllData')
       .then(result => {
-        console.log(result.data);
         if (result.data == "") {
           this.setState ({ mangas: "none" });
           return;
